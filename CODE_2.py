@@ -29,11 +29,16 @@ def get_alcyone_coords_for_2300_years():
     df = pd.DataFrame(accumulator, columns=['time', 'ra', 'dec' , 'lon', 'lat'])    
     return df
 
-display(get_alcyone_coords_for_2300_years())
+def plot_alcyone_coords_for_2300_years():
+    alcyone_df = get_alcyone_coords_for_2300_years()
+    alcyone_df.plot(
+        x='time', y='lon', kind='line', title='Alcyone Longitude over 2300 years',
+        xlabel='Time', ylabel='Longitude (deg)', legend=False, grid=True, marker='o',
+        figsize=(10, 5), fontsize=12, color='blue'
+    )
+    display(alcyone_df)
 
-
-#%%
-
+plot_alcyone_coords_for_2300_years()
 
 #%%
 
@@ -66,3 +71,5 @@ d = pd.DataFrame(Azi, columns=["Azimuth"])
 plt.plot(Azi, label='Azimuth')
 plt.legend()
 plt.show()
+
+# %%
