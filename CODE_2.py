@@ -1,3 +1,8 @@
+#%%
+## Code2
+# get the coordinates of the Alcyone for 23 years  ( should be 2300 years)
+# - ra, dec, lat and lon.
+
 #Importing libraries
 from astropy.coordinates import Angle
 from astropy import coordinates as coord
@@ -8,6 +13,29 @@ import matplotlib.pyplot as plt
 from astropy.time import Time
 from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 import astropy.units as u
+
+#%%
+
+def get_alcyone_coords_for_2300_years():
+    now = Time.now()
+    alcyone = SkyCoord.from_name('Alcyone')
+    accumulator = []
+    for i in range(0, 23): 
+        t = now - i*100*u.year
+        ymd = t.isot.split('T')[0]
+        alcyone_radec = alcyone.transform_to(coord.FK5(equinox=t))
+        alcyone_ecliptic = alcyone.transform_to(coord.GeocentricTrueEcliptic(equinox=t))
+        accumulator.append ([ymd, alcyone_radec.ra.deg, alcyone_radec.dec.deg, alcyone_ecliptic.lon.deg, alcyone_ecliptic.lat.deg]) 
+    df = pd.DataFrame(accumulator, columns=['time', 'ra', 'dec' , 'lon', 'lat'])    
+    return df
+
+display(get_alcyone_coords_for_2300_years())
+
+
+#%%
+
+
+#%%
 
 # Specify the observing location on Earth (for example, New York City)
 observer_location = EarthLocation(
